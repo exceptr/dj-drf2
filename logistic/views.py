@@ -15,10 +15,13 @@ class ProductViewSet(ModelViewSet):
     pagination_class = LimitOffsetPagination
 
 
+class StockSearchFilter(SearchFilter):
+    search_param = 'products'
+
+
 class StockViewSet(ModelViewSet):
     queryset = Stock.objects.all()
     serializer_class = StockSerializer
-    filterset_fields = ['products']
-    filter_backends = [DjangoFilterBackend, SearchFilter]
-    search_fields = ['address']
+    filter_backends = [StockSearchFilter, DjangoFilterBackend, SearchFilter]
+    search_fields = ['products__title', 'products__description', 'address']
     pagination_class = LimitOffsetPagination
